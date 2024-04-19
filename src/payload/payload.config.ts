@@ -1,4 +1,5 @@
-import { webpackBundler } from '@payloadcms/bundler-webpack'
+// import { webpackBundler } from '@payloadcms/bundler-webpack'
+import { viteBundler } from '@payloadcms/bundler-vite'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { payloadCloud } from '@payloadcms/plugin-cloud'
 import nestedDocs from '@payloadcms/plugin-nested-docs'
@@ -10,6 +11,7 @@ import dotenv from 'dotenv'
 import path from 'path'
 import { buildConfig } from 'payload/config'
 
+import { Articles } from './collections/Articles'
 import Categories from './collections/Categories'
 import Comments from './collections/Comments'
 import { Media } from './collections/Media'
@@ -25,7 +27,7 @@ import { Header } from './globals/Header'
 import { Settings } from './globals/Settings'
 
 const generateTitle: GenerateTitle = () => {
-  return 'My Website'
+  return 'NNY Digital Newspaper Dev'
 }
 
 dotenv.config({
@@ -35,7 +37,7 @@ dotenv.config({
 export default buildConfig({
   admin: {
     user: Users.slug,
-    bundler: webpackBundler(),
+    bundler: viteBundler(),
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
@@ -44,27 +46,28 @@ export default buildConfig({
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
       beforeDashboard: [BeforeDashboard],
     },
-    webpack: config => ({
-      ...config,
-      resolve: {
-        ...config.resolve,
-        alias: {
-          ...config.resolve.alias,
-          dotenv: path.resolve(__dirname, './dotenv.js'),
-          [path.resolve(__dirname, './endpoints/seed')]: path.resolve(
-            __dirname,
-            './emptyModuleMock.js',
-          ),
-        },
-      },
-    }),
+    // webpack: config => ({
+    //   ...config,
+    //   resolve: {
+    //     ...config.resolve,
+    //     alias: {
+    //       ...config.resolve.alias,
+    //       dotenv: path.resolve(__dirname, './dotenv.js'),
+    //       [path.resolve(__dirname, './endpoints/seed')]: path.resolve(
+    //         __dirname,
+    //         './emptyModuleMock.js',
+    //       ),
+    //     },
+    //   },
+    // }),
+
   },
   editor: slateEditor({}),
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
-  collections: [Pages, Posts, Projects, Media, Categories, Users, Comments],
+  collections: [Articles, Pages, Posts, Projects, Media, Categories, Users, Comments],
   globals: [Settings, Header, Footer],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
@@ -91,7 +94,7 @@ export default buildConfig({
       collections: ['categories'],
     }),
     seo({
-      collections: ['pages', 'posts', 'projects'],
+      collections: ['articles', 'pages', 'posts', 'projects'],
       generateTitle,
       uploadsCollection: 'media',
     }),
