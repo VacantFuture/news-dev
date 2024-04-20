@@ -5,11 +5,23 @@ import type { CollectionConfig } from 'payload/types'
 
 export const Articles: CollectionConfig = {
   slug: 'articles',
+  admin: {
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'slug', 'updatedAt'],
+    preview: doc => {
+      return `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/next/preview?url=${encodeURIComponent(
+        `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/articles/${doc?.slug}`,
+      )}&secret=${process.env.PAYLOAD_PUBLIC_DRAFT_SECRET}`
+    },
+  },
   upload: {
     staticDir: path.resolve(__dirname, '../../../articles'),
   },
   access: {
     read: () => true,
+  },
+  versions: {
+    drafts: true,
   },
   fields: [
     {
