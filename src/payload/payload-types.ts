@@ -38,6 +38,7 @@ export interface Article {
         [k: string]: unknown;
       }[]
     | null;
+  slug?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -45,6 +46,7 @@ export interface Article {
   };
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
   url?: string | null;
   filename?: string | null;
   mimeType?: string | null;

@@ -5,7 +5,7 @@ import { payloadCloud } from '@payloadcms/plugin-cloud'
 import nestedDocs from '@payloadcms/plugin-nested-docs'
 import redirects from '@payloadcms/plugin-redirects'
 import seo from '@payloadcms/plugin-seo'
-import type { GenerateTitle } from '@payloadcms/plugin-seo/types'
+import type { GenerateTitle, GenerateDescription } from '@payloadcms/plugin-seo/types'
 import { slateEditor } from '@payloadcms/richtext-slate'
 import dotenv from 'dotenv'
 import path from 'path'
@@ -29,6 +29,11 @@ import { Settings } from './globals/Settings'
 const generateTitle: GenerateTitle = () => {
   return 'NNY Digital Newspaper Dev'
 }
+
+const generateDescription: GenerateDescription = () => {
+  return 'NNY Digital Newspaper Dev'
+}
+
 
 dotenv.config({
   path: path.resolve(__dirname, '../../.env'),
@@ -95,8 +100,10 @@ export default buildConfig({
     }),
     seo({
       collections: ['articles', 'pages', 'posts', 'projects'],
-      generateTitle,
       uploadsCollection: 'media',
+      generateTitle: ({ doc }) => `NNY Newspaper Dev — ${doc.title.value}`,
+      generateDescription: ({ doc }) => doc.excerpt
+
     }),
     payloadCloud(),
   ],
