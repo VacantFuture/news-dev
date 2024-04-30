@@ -57,6 +57,11 @@ const Users: CollectionConfig = {
           value: 'copy'
 
         },
+        {
+          label: 'media',
+          value: 'media'
+
+        },
 
       ],
       hooks: {

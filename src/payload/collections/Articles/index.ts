@@ -9,6 +9,8 @@ import { slugField } from '../../fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidatePost } from './hooks/revalidatePost'
+import './articles.scss'
+
 
 export const Articles: CollectionConfig = {
   slug: 'articles',
@@ -49,9 +51,12 @@ export const Articles: CollectionConfig = {
       // },
     },
     {
-      name: 'title',
-      type: 'text',
-      required: true,
+      name: 'stages',
+      type: 'relationship',
+      relationTo: 'stages',
+      admin: {
+        position: 'sidebar'
+      }
     },
     {
       name: 'categories',
@@ -96,6 +101,36 @@ export const Articles: CollectionConfig = {
     // GraphQL will also not return mutated user data that differs from the underlying schema
     {
       name: 'populatedAuthors',
+      type: 'array',
+      admin: {
+        readOnly: true,
+        disabled: true,
+      },
+      access: {
+        update: () => false,
+      },
+      fields: [
+        {
+          name: 'id',
+          type: 'text',
+        },
+        {
+          name: 'name',
+          type: 'text',
+        },
+      ],
+    },
+    {
+      name: 'editors',
+      type: 'relationship',
+      relationTo: 'users',
+      hasMany: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'populatedEditors',
       type: 'array',
       admin: {
         readOnly: true,
